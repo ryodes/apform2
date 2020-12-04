@@ -11,16 +11,32 @@
     
     <div class="row" style="border: 1px solid white">
         {% for row in tab2 %}
-            <div class="col">
+            <div class="col" style="border: 1px solid blue">
                 <p> je suis {{row}} </p>
             </div>
         {% endfor %}
     </div>
     <div class="row" style="border: 1px solid red">
         {% for row in tab %}
-            <div class="col">
+            <div class="col" style="border: 1px solid blue">
                 <p> {{row}} </p>
             </div>
+        {% endfor %}
+    </div>
+
+    <div>
+        {% if count > 1 %}
+            <p> {{count}} produits </p>
+        {% else %}
+            <p> {{count}} produit </p>
+        {% endif %}
+    </div>
+
+    <div>
+        {% for row in products %}
+            <p>
+                le produit {{row.name}} est à {{row.price}}€, retrouver plus d'info sur <a href="#">{{row.slug}}</a><br>
+            </p>
         {% endfor %}
     </div>
 
