@@ -8,5 +8,20 @@
     {% for row in tab %}
         {{ row }}
     {% endfor %}
+    
+    <div class="row" style="border: 1px solid white">
+        {% for row in tab2 %}
+            <div class="col">
+                <p> je suis {{row}} </p>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row" style="border: 1px solid red">
+        {% for row in tab %}
+            <div class="col">
+                <p> {{row}} </p>
+            </div>
+        {% endfor %}
+    </div>
 
 {% endblock %}
