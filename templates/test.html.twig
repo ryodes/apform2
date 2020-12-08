@@ -33,10 +33,8 @@
     </div>
 
     <div>
-        {% for row in products %}
-            <p>
-                le produit {{row.name}} est à {{row.price}}€, retrouver plus d'info sur <a href="#">{{row.slug}}</a><br>
-            </p>
+        {% for row in product %}
+            <p>Article n°{{ row.id }}: {{ row.name }} coûte {{ row.price }}€</p>
         {% endfor %}
     </div>
 
