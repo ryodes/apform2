@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
+use App\Form\CategoryFormType;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Category;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CategoryController extends AbstractController
 {
@@ -30,16 +34,55 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/add", name="ajoutCategory")
      */
-    public function addCategory() {
-        $em = $this->getDoctrine()->getManager();
+    public function addCategory(Request $request, EntityManagerInterface $em)
+    {
         $category = new Category;
-        $category->setName('xiaomi')
-                 ->setDescription('un autre fabricant')
-                 ->setSlug('xiaomi');
-        $em->persist($category);
-        $em->flush();
+        $form = $this->createForm(CategoryFormType::class, $category);
 
-        return $this->redirectToRoute('success');
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($category);
+            $em->flush();
+
+            return $this->redirectToRoute('success');
+        }
+
+
+        return $this->render('category/add.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/category/edit/{id}",name="editCategory")
+     */
+    public function editCategory(Request $request, EntityManagerInterface $em, $id)
+    {
+        $category = $em->getRepository(Category::class)->find($id);
+        $form = $this->createForm(CategoryFormType::class, $category);
+
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($category);
+            $em->flush();
+
+            return $this->redirectToRoute('success');
+        }
+
+
+        return $this->render('category/edit.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/category/delete/{id}",name="deleteCategory")
+     */
+    public function deleteCategory(Request $request, EntityManagerInterface $em, $id){
+        $category = $em->getRepository(Category::class)->find($id);
+        $em->remove($category);
+        $em->flush();
+        return $this->redirectToRoute('category');
     }
 
 }
