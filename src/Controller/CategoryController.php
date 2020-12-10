@@ -88,4 +88,15 @@ class CategoryController extends AbstractController
         return $this->redirectToRoute('category');
     }
 
+    /**
+     * @Route("/category/{id}/products",name="productsCategory")
+     */
+    public function productsCategory(Request $request, ProductRepository $productRepository, EntityManagerInterface $em, $id){
+        $repository = $productRepository->findBy(['categoryId' => $id]);
+
+        return $this->render('category/productsCategory.html.twig', [
+            'listProductByCategory' => $repository,
+            ]);
+    }
+
 }

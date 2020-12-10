@@ -83,4 +83,16 @@ class ProductController extends AbstractController
             'formProdcut' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/product/{id}", name="detailProduct")
+     */
+    public function editCategory(Request $request, ProductRepository $productRepository, EntityManagerInterface $em, $id){
+
+        $product = $productRepository->find($id);
+        
+        return $this->render('product/produdctDetail.html.twig',[
+            'product' => $product,
+        ]);
+    }
 }

@@ -5,20 +5,16 @@
 {% block body %}
 
 <div class="container">
-
+    <h3>Les produits de la catégories</h3>
     <table class="table">
         <tr>
             <th>Nom</th>
             <th>price</th>
         </tr>
-        {% for product in listProduct %}
+        {% for row in listProductByCategory %}
         <tr>
-            <td>{{product.name}}</td>
-            <td>{{product.price}}</td>
-            <td>
-                <a href="{{path('detailProduct',{'id':product.id})}}">Détail du produit</a>
-            </td>
-            <td><a href="#" class="btn btn-danger"> X </a></td>
+            <td>{{row.name}}</td>
+            <td>{{row.price}}</td>
         </tr>
 
         {% endfor  %}
