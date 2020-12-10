@@ -59,6 +59,9 @@ class CategoryController extends AbstractController
     public function editCategory(Request $request, EntityManagerInterface $em, $id)
     {
         $category = $em->getRepository(Category::class)->find($id);
+        if (!$category){
+            return $this->redirectToRoute('category');
+        }
         $form = $this->createForm(CategoryFormType::class, $category);
 
         $form->handleRequest($request);
