@@ -24,18 +24,4 @@
         {% endfor %}
     </div>
 
-    <div>
-        {% if count > 1 %}
-            <p> {{count}} produits </p>
-        {% else %}
-            <p> {{count}} produit </p>
-        {% endif %}
-    </div>
-
-    <div>
-        {% for row in product %}
-            <p>Article n°{{ row.id }}: {{ row.name }} coûte {{ row.price }}€</p>
-        {% endfor %}
-    </div>
-
 {% endblock %}

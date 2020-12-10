@@ -1,0 +1,7 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    {% for row in listCategory %}
+        <p>{{ row.name }} / {{row.description}} / {{row.slug}} </p>
+    {% endfor %}
+{% endblock body %}

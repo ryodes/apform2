@@ -1,0 +1,7 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    {% for row in listProduct %}
+        <p>{{ row.name }} / {{row.price}} / {{row.slug}} </p>
+    {% endfor %}
+{% endblock body %}
