@@ -1,5 +1,8 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+    {{form_start(formProdcut)}}
+    {{form_row(formProdcut._token)}}
     {{form(formProdcut)}}
+    {{form_end(formProdcut)}}
 {% endblock body %}
