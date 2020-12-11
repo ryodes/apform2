@@ -6,7 +6,11 @@
 
 <div class="container">
 
-    {{form(form)}}
+    {{form_start(form)}}
+        {{form_row(form.name, {'attr':{'placeholder' : 'nom de la categorie'}})}}
+        {{form_row(form.description, {'attr':{'placeholder' : 'description de la categorie'}})}}
+        {{form_row(form.slug, {'attr':{'placeholder' : 'slug de la categorie'}})}}
+    {{form_end(form)}}
 
 </div>
 {% endblock %}

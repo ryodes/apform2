@@ -6,6 +6,8 @@
 
 <div class="container">
     <h3>Les produits de la catégories</h3>
+    {% if listProductByCategory %}
+
     <table class="table">
         <tr>
             <th>Nom</th>
@@ -16,8 +18,11 @@
             <td><a href="{{path('detailProduct',{'id':row.id})}}">{{row.name}}</a></td>
             <td>{{row.price}}</td>
         </tr>
-
+        
         {% endfor  %}
+    {% else %}
+        <h3>Aucun résultat trouvé !</h3>
+    {% endif %}
     </table>
 
 
