@@ -15,7 +15,6 @@ class CategoryFormType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('slug')
             ->add('save', SubmitType::class);
     }
 

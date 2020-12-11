@@ -43,6 +43,7 @@ class CategoryController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $category->setSlug(str_replace(' ', '-', $category->getName()));
             $em->persist($category);
             $em->flush();
 
