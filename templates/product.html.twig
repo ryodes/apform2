@@ -9,16 +9,12 @@
     <table class="table">
         <tr>
             <th>Nom</th>
-            <th>price</th>
+            <th>prix</th>
         </tr>
         {% for product in listProduct %}
         <tr>
-            <td>{{product.name}}</td>
+            <td><a href="{{path('detailProduct',{'id':product.id})}}">{{product.name}}</a></td>
             <td>{{product.price}}</td>
-            <td>
-                <a href="{{path('detailProduct',{'id':product.id})}}">Détail du produit</a>
-            </td>
-            <td><a href="#" class="btn btn-danger"> X </a></td>
         </tr>
 
         {% endfor  %}

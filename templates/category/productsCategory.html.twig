@@ -9,11 +9,11 @@
     <table class="table">
         <tr>
             <th>Nom</th>
-            <th>price</th>
+            <th>prix (€)</th>
         </tr>
         {% for row in listProductByCategory %}
         <tr>
-            <td>{{row.name}}</td>
+            <td><a href="{{path('detailProduct',{'id':row.id})}}">{{row.name}}</a></td>
             <td>{{row.price}}</td>
         </tr>
 
