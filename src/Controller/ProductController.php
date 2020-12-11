@@ -38,20 +38,21 @@ class ProductController extends AbstractController
 
         $builder = $this->createFormBuilder();
         $builder->add('name', TextType::class, [
-            'attr' => [
-                'placeholder' => "nom du produit"
-                ]
-            ])
+                    'attr' => [
+                        'placeholder' => "nom du produit"
+                        ]
+                    ])
                 ->add('price', IntegerType::class, [
                     'attr' => [
                         'placeholder' => "prix du produit"
                         ]
                     ])
-                ->add('slug', TextType::class, [
+                ->add('image', TextType::class, [
                     'attr' => [
-                        'placeholder' => "slug du produit"
+                        'placeholder' => "image du produit"
                         ]
                     ])
+                
                 ->add('category',
                 EntityType::class,
                 [
@@ -71,7 +72,8 @@ class ProductController extends AbstractController
             $product = new Product;
             $product->setName($data['name'])
                     ->setPrice($data['price'])
-                    ->setSlug($data['slug'])
+                    ->setImg($data['image'])
+                    ->setSlug(str_replace(' ', '-', $data['name']))
                     ->setCategoryId($data['category']);
             $em->persist($product);
             $em->flush();
@@ -87,12 +89,22 @@ class ProductController extends AbstractController
     /**
      * @Route("/product/{id}", name="detailProduct")
      */
-    public function editCategory(Request $request, ProductRepository $productRepository, EntityManagerInterface $em, $id){
+    public function detailProduct(Request $request, ProductRepository $productRepository, EntityManagerInterface $em, $id){
 
         $product = $productRepository->find($id);
         
         return $this->render('product/produdctDetail.html.twig',[
             'product' => $product,
         ]);
+    }
+
+    /**
+     * @Route("/product/delete/{id}", name="deleteProduct")
+     */
+    public function deleteProduct(Product $product, EntityManagerInterface $em, $id){
+
+        $em->remove($product);
+        $em->flush();
+        return $this->redirectToRoute('product');
     }
 }

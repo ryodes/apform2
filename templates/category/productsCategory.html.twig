@@ -17,6 +17,7 @@
         <tr>
             <td><a href="{{path('detailProduct',{'id':row.id})}}">{{row.name}}</a></td>
             <td>{{row.price}}</td>
+            <td><a href="{{path('deleteProduct',{'id':row.id})}}" class="btn btn-danger"> X </a></td>
         </tr>
         
         {% endfor  %}

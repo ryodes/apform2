@@ -5,18 +5,20 @@
 {% block body %}
 
 <div class="container">
-    <h3> Détail du produit</h3>
+    <div class="row">
+        <div class="col">
 
-    <table class="table">
-        <tr>
-            <th>Nom</th>
-            <th>price (€)</th>
-        </tr>
-        <tr>
-            <td>{{product.name}}</td>
-            <td>{{product.price}}</td>
-        </tr>
-    </table>
-
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top"
+                    src="{{product.img}}"
+                    alt="Dét" width="500">
+                <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text">{{product.price}} €</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
