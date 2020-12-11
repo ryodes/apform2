@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Form\ProductFormType;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -33,7 +38,9 @@ class ProductController extends AbstractController
     /**
      * @Route("/product/add", name="productAdd")
      */
-    public function addProduct(EntityManagerInterface $em, Request $request){
+    public function addProduct(KernelInterface $appKernel, EntityManagerInterface $em, Request $request, SluggerInterface $slugger){
+        $path = $appKernel->getProjectDir() . '\public\img';
+
         $Product = new Product;
 
         $builder = $this->createFormBuilder();
@@ -47,12 +54,24 @@ class ProductController extends AbstractController
                         'placeholder' => "prix du produit"
                         ]
                     ])
-                ->add('image', TextType::class, [
+                ->add('img', FileType::class, [
+                    'required' => false,
+                    'label' => 'Image produit',
                     'attr' => [
-                        'placeholder' => "image du produit"
-                        ]
-                    ])
-                
+                        'placeholder' => 'Ajouter une image',
+                    ],
+                    'constraints' => [
+                        new File([
+                            'maxSize' => '4096k',
+                            'mimeTypes' => [
+                                'image/jpeg',
+                                'image/png',
+                            ],
+                            'mimeTypesMessage' => 'Merci de charger une jpg/png',
+                            'uploadFormSizeErrorMessage' => 'Taille maximale de fichier 4 Méga'
+                        ])
+                    ],
+                ])
                 ->add('category',
                 EntityType::class,
                 [
@@ -68,13 +87,30 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $data = $form->getData();
-
             $product = new Product;
             $product->setName($data['name'])
                     ->setPrice($data['price'])
-                    ->setImg($data['image'])
-                    ->setSlug(str_replace(' ', '-', $data['name']))
+                    #->setSlug(str_replace(' ', '-', $data['name']))
+                    ->setSlug($slugger->slug($product->getName()))
                     ->setCategoryId($data['category']);
+
+            $file = $form['img']->getData();
+            if ($file) {
+                // récup nom de fichier sans extension
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+
+                $newFilename = $originalFilename . '-' . uniqid() . '.' . $file->guessExtension();
+                // set nom dans la propriété Img
+                $product->setImg($newFilename);
+
+                //Déplacer le fichier dans le répertoire public + sous répertoire
+                try {
+                    $file->move($path, $newFilename);
+                } catch (FileException $e) {
+                    echo $e->getMessage();
+                }
+            }
+
             $em->persist($product);
             $em->flush();
 

@@ -5,4 +5,18 @@
     {{form_row(formProdcut._token)}}
     {{form(formProdcut)}}
     {{form_end(formProdcut)}}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var fichierRecto = document.querySelector('#form_img')
+            var labelRecto = fichierRecto.nextElementSibling
+    
+            fichierRecto.addEventListener('change', function (e) {
+                const fileName = fichierRecto.value;
+                labelRecto.innerHTML = fileName.split('\\')[fileName.split('\\').length-1];
+            })
+    
+        });
+    
+    </script>
 {% endblock body %}
