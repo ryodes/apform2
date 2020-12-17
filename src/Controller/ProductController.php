@@ -25,7 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/product", name="product")
+     * @Route("/admin/product", name="product")
      */
     public function product(ProductRepository $productRepository)
     {
@@ -36,7 +36,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/add", name="productAdd")
+     * @Route("/admin/product/add", name="productAdd")
      */
     public function addProduct(KernelInterface $appKernel, EntityManagerInterface $em, Request $request, SluggerInterface $slugger){
         $path = $appKernel->getProjectDir() . '\public\img';
@@ -114,6 +114,8 @@ class ProductController extends AbstractController
             $em->persist($product);
             $em->flush();
 
+            $this->addFlash('success', 'Produit ajouté avec succès');
+
             return $this->redirectToRoute('success');
         }
 
@@ -123,7 +125,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/{id}", name="detailProduct")
+     * @Route("/admin/product/{id}", name="detailProduct")
      */
     public function detailProduct(Request $request, ProductRepository $productRepository, EntityManagerInterface $em, $id){
 
@@ -135,12 +137,15 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/delete/{id}", name="deleteProduct")
+     * @Route("/admin/product/delete/{id}", name="deleteProduct")
      */
     public function deleteProduct(Product $product, EntityManagerInterface $em, $id){
 
         $em->remove($product);
         $em->flush();
+
+        $this->addFlash('success', 'Produit effacé avec succès');
+
         return $this->redirectToRoute('product');
     }
 }

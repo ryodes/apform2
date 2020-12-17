@@ -9,14 +9,29 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Category;
 
-class TestController extends AbstractController
+class HomeController extends AbstractController
 {
+    /**
+     * @Route("/product/{id}-{slug}", name="detailProduct")
+     */
+    public function detailProduct(ProductRepository $productRepository, $id){
+
+        $product = $productRepository->find($id);
+        
+        return $this->render('product/produdctDetail.html.twig',[
+            'product' => $product,
+        ]);
+    }
+
     /**
      * @Route("/", name="index")
      */
-    public function index(): Response
+    public function index(ProductRepository $productRepository): Response
     {
-        return $this->render('base.html.twig');
+        $product = $productRepository->findAll();
+        return $this->render('product.html.twig', [
+            'listProduct' => $product,
+        ]); 
     }
 
     /**
